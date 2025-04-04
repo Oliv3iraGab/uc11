@@ -3,6 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 
+import java.util.ArrayList;
+
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author limag
@@ -31,7 +36,7 @@ public class vendasVIEW extends javax.swing.JFrame {
         tblProdutosVendidos = new javax.swing.JTable();
         btnVoltar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setText("Lista de Produtos Vendidos");
@@ -75,8 +80,8 @@ public class vendasVIEW extends javax.swing.JFrame {
                 .addGap(16, 16, 16)
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                 .addComponent(btnVoltar)
                 .addContainerGap())
         );
@@ -93,6 +98,7 @@ public class vendasVIEW extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
@@ -144,4 +150,31 @@ public class vendasVIEW extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblProdutosVendidos;
     // End of variables declaration//GEN-END:variables
+
+    public void listarProdutosVendidos() {
+        try {
+            ProdutosDAO produtosDAO = new ProdutosDAO();
+            DefaultTableModel model = (DefaultTableModel) tblProdutosVendidos.getModel();
+            model.setNumRows(0);
+
+            ArrayList<ProdutosDTO> produtosVendidos = produtosDAO.listarProdutosVendidos();
+            
+            if (produtosVendidos != null) {
+                for (ProdutosDTO produto : produtosVendidos) {
+                    Object[] row = {
+                        produto.getId(),
+                        produto.getNome(),
+                        produto.getValor(),
+                        produto.getStatus()
+                    };
+                    model.addRow(row);
+                }
+            }
+        }catch (Exception e) {
+            JOptionPane.showMessageDialog(this, 
+                "Erro ao listar produtos: " + e.getMessage(),
+                "Erro",
+                JOptionPane.ERROR_MESSAGE);
+        }
+    }
 }
