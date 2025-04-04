@@ -16,7 +16,7 @@ public class conectaDAO {
 
     private static Connection conn;
 
-    public Connection connectDB(){
+    public static Connection connectDB(){
         Connection conn = null;
         
         try {
@@ -28,7 +28,7 @@ public class conectaDAO {
         return conn;
     }
 
-    private static void disconnectDB() {
+    public static void disconnectDB() {
         try {
             if (conn != null && !conn.isClosed()) {
                 conn.close();
